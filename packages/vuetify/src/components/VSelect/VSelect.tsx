@@ -111,6 +111,7 @@ export const VSelect = genericComponent<new <
   V extends Value<Item, ReturnObject, Multiple> = Value<Item, ReturnObject, Multiple>
 >(
   props: {
+    ignoreModifier?: boolean
     items?: T
     itemTitle?: SelectItemKey<ItemType<T>>
     itemValue?: SelectItemKey<ItemType<T>>
@@ -219,9 +220,14 @@ export const VSelect = genericComponent<new <
     }
     function onKeydown (e: KeyboardEvent) {
       if (!e.key || form.isReadonly.value) return
-
+      const hasModifier = e.altKey || e.shiftKey || e.ctrlKey || e.metaKey
+      
       if (['Enter', ' ', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
         e.preventDefault()
+      }
+      
+      if((hasModifier && !props.ignoreModifier) {
+        menu.value = false
       }
 
       if (['Enter', 'ArrowDown', ' '].includes(e.key)) {
